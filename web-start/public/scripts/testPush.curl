@@ -1,0 +1,12 @@
+curl -H "Content-Type: application/json" \
+     -H "Authorization: key=AAAAkvPb57w:APA91bHcTvmJiAnEa6-P4GZ18Hl64XwVRMcLbnaBSDROOuP6MwzZQyNUtBIObL-eyQ3513VLEDerKaI2dD8EnJ8llYPy4V5oWzpQ82gli_HHgRUqiOSRTtMgqO3iCGw5MxEeEBpnpiOG" \
+     -d '{
+           "notification": {
+             "title": "New chat message!",
+             "body": "There is a new message in FriendlyChat",
+             "icon": "/images/profile_placeholder.png",
+             "click_action": "https://friendlychat-492ed.firebaseapp.com"
+           },
+           "to": "cQb1lc8atHE:APA91bFRs-rgVpkFn0dr5ETue7EUZgPXgdBLlZP7zRR18mskBuAzdgq0t93gbhf5tCv3nFl9zyHdBPxL-HWlws3B3_yvCOkdu_sEqUqiGdiDIAZJSY-h4DDsRt13JLSpJGVi-Vi7Nzu0"
+         }' \
+     https://fcm.googleapis.com/fcm/send
