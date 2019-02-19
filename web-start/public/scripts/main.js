@@ -22,6 +22,23 @@ function signIn() {
   firebase.auth().signInWithPopup(provider);
 }
 
+// Signs-in Friendly Chat.
+function signInEmail() {
+  firebase.auth().signInWithEmailAndPassword('radomskip@gmail.com', 'luca1234').catch(function(error) {
+
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    var data = {
+      message: errorCode + '-' + errorMessage
+    };
+    signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
+
+
+  });
+
+}
+
 // Signs-out of Friendly Chat.
 function signOut() {
   // Sign out of Firebase.
@@ -193,6 +210,7 @@ function authStateObserver(user) {
 
     // Hide sign-in button.
     signInButtonElement.setAttribute('hidden', 'true');
+    signInEmailButtonElement.setAttribute('hidden', 'true');
 
     // We save the Firebase Messaging Device token and enable notifications.
     saveMessagingDeviceToken();
@@ -204,6 +222,7 @@ function authStateObserver(user) {
 
     // Show sign-in button.
     signInButtonElement.removeAttribute('hidden');
+    signInEmailButtonElement.removeAttribute('hidden');
   }
 }
 
@@ -333,6 +352,7 @@ var mediaCaptureElement = document.getElementById('mediaCapture');
 var userPicElement = document.getElementById('user-pic');
 var userNameElement = document.getElementById('user-name');
 var signInButtonElement = document.getElementById('sign-in');
+var signInEmailButtonElement = document.getElementById('sign-in-email');
 var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 
@@ -340,6 +360,7 @@ var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 messageFormElement.addEventListener('submit', onMessageFormSubmit);
 signOutButtonElement.addEventListener('click', signOut);
 signInButtonElement.addEventListener('click', signIn);
+signInEmailButtonElement.addEventListener('click', signInEmail);
 
 // Toggle for the button.
 messageInputElement.addEventListener('keyup', toggleButton);
