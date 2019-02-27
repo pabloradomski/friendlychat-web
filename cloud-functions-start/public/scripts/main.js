@@ -355,21 +355,22 @@ bulkElement.addEventListener('click', onClickBulk);
 function onClickBulk(e) {
 
   var batch = firebase.firestore().batch();
+  var d = new Date();
 
   for(let i=1; i<=500; i++) {
-
-    var nycRef =  firebase.firestore().collection('valores').doc('ind-A-'+i)
+    var d = new Date();
+    var n = d.getTime();
+    var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
     batch.set(nycRef,{value: i});
-
   }
 
   var batch2 = firebase.firestore().batch();
 
   for(let i=1; i<=500; i++) {
-
-    var nycRef =  firebase.firestore().collection('valores').doc('ind-B-'+i)
+    var d = new Date();
+    var n = d.getTime();
+    var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
     batch2.set(nycRef,{value: i});
-
   }
 
   batch.commit().then((ok)=>console.log('ok'));
