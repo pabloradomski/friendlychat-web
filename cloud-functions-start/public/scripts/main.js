@@ -354,27 +354,33 @@ bulkElement.addEventListener('click', onClickBulk);
 
 function onClickBulk(e) {
 
-  var batch = firebase.firestore().batch();
-  var d = new Date();
 
-  for(let i=1; i<=500; i++) {
-    var d = new Date();
-    var n = d.getTime();
-    var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
-    batch.set(nycRef,{value: i});
+  for(let k=1; k<=20; k++) {
+  
+    var batch = firebase.firestore().batch();
+
+    var d = k * 1000;
+
+    for(let i=d; i<=d+500; i++) {
+      var d = new Date();
+      var n = d.getTime();
+      var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
+      batch.set(nycRef,{value: i});
+    }
+
+    var batch2 = firebase.firestore().batch();
+
+    for(let i=d+501; i<=d+1001; i++) {
+      var d = new Date();
+      var n = d.getTime();
+      var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
+      batch2.set(nycRef,{value: i});
+    }
+
+    batch.commit().then((ok)=>console.log('ok'));
+    batch2.commit().then((ok)=>console.log('ok2'));
+
   }
-
-  var batch2 = firebase.firestore().batch();
-
-  for(let i=1; i<=500; i++) {
-    var d = new Date();
-    var n = d.getTime();
-    var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
-    batch2.set(nycRef,{value: i});
-  }
-
-  batch.commit().then((ok)=>console.log('ok'));
-  batch2.commit().then((ok)=>console.log('ok2'));
 
 }
 
