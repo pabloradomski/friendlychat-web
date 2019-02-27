@@ -332,6 +332,7 @@ var userNameElement = document.getElementById('user-name');
 var signInButtonElement = document.getElementById('sign-in');
 var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
+var bulkElement = document.getElementById('bulk');
 
 // Saves message on form submit.
 messageFormElement.addEventListener('submit', onMessageFormSubmit);
@@ -348,6 +349,33 @@ imageButtonElement.addEventListener('click', function(e) {
   mediaCaptureElement.click();
 });
 mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+
+bulkElement.addEventListener('click', onClickBulk);
+
+function onClickBulk(e) {
+
+  var batch = firebase.firestore().batch();
+
+  for(let i=1; i<=500; i++) {
+
+    var nycRef =  firebase.firestore().collection('valores').doc('ind-A-'+i)
+    batch.set(nycRef,{value: i});
+
+  }
+
+  var batch2 = firebase.firestore().batch();
+
+  for(let i=1; i<=500; i++) {
+
+    var nycRef =  firebase.firestore().collection('valores').doc('ind-B-'+i)
+    batch2.set(nycRef,{value: i});
+
+  }
+
+  batch.commit().then((ok)=>console.log('ok'));
+  batch2.commit().then((ok)=>console.log('ok2'));
+
+}
 
 // initialize Firebase
 initFirebaseAuth();
