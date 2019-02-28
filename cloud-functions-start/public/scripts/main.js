@@ -373,13 +373,12 @@ function onClickBulk(e) {
 }
 
 function onClickBulkRead(e) {
-
+  var i=1;
   firebase.firestore().collection('valores').get().then(s => {
       s.docs.forEach(doc => {
-        console.log(doc.id);
+        console.log(i++);
       });
   });
-
 }
 
 // initialize Firebase
