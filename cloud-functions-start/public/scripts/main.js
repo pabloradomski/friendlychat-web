@@ -353,34 +353,22 @@ mediaCaptureElement.addEventListener('change', onMediaFileSelected);
 bulkElement.addEventListener('click', onClickBulk);
 
 function onClickBulk(e) {
-
-
-  for(let k=1; k<=20; k++) {
   
     var batch = firebase.firestore().batch();
+  
+    var tope = 1000;
 
-    var d = k * 1000;
-
-    for(let i=d; i<=d+500; i++) {
-      var d = new Date();
-      var n = d.getTime();
-      var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
+    for(let i=1; i<=tope; i++) {
+      var nycRef =  firebase.firestore().collection('valores').doc('ind-'+i)
       batch.set(nycRef,{value: i});
+      //console.log(i);
+      if (i % 500 == 0 || i==tope) {
+        batch.commit().then((ok)=>console.log('ok ' + i));
+        //console.log('ok '+i);
+        batch = firebase.firestore().batch();
+      }
     }
-
-    var batch2 = firebase.firestore().batch();
-
-    for(let i=d+501; i<=d+1001; i++) {
-      var d = new Date();
-      var n = d.getTime();
-      var nycRef =  firebase.firestore().collection('valores').doc('ind-'+n)
-      batch2.set(nycRef,{value: i});
-    }
-
-    batch.commit().then((ok)=>console.log('ok'));
-    batch2.commit().then((ok)=>console.log('ok2'));
-
-  }
+    
 
 }
 
