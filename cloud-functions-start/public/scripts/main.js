@@ -333,6 +333,7 @@ var signInButtonElement = document.getElementById('sign-in');
 var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 var bulkElement = document.getElementById('bulk');
+var bulkReadElement = document.getElementById('bulkRead');
 
 // Saves message on form submit.
 messageFormElement.addEventListener('submit', onMessageFormSubmit);
@@ -351,24 +352,33 @@ imageButtonElement.addEventListener('click', function(e) {
 mediaCaptureElement.addEventListener('change', onMediaFileSelected);
 
 bulkElement.addEventListener('click', onClickBulk);
+bulkReadElement.addEventListener('click', onClickBulkRead);
 
 function onClickBulk(e) {
   
-    var batch = firebase.firestore().batch();
-  
-    var tope = 1000;
+  var batch = firebase.firestore().batch();
+  var tope = 1000;
 
-    for(let i=1; i<=tope; i++) {
-      var nycRef =  firebase.firestore().collection('valores').doc('ind-'+i)
-      batch.set(nycRef,{value: i});
-      //console.log(i);
-      if (i % 500 == 0 || i==tope) {
-        batch.commit().then((ok)=>console.log('ok ' + i));
-        //console.log('ok '+i);
-        batch = firebase.firestore().batch();
-      }
+  for(let i=1; i<=tope; i++) {
+    var nycRef =  firebase.firestore().collection('valores').doc('ind-'+i)
+    batch.set(nycRef,{value: i});
+    //console.log(i);
+    if (i % 500 == 0 || i==tope) {
+      batch.commit().then((ok)=>console.log('ok ' + i));
+      //console.log('ok '+i);
+      batch = firebase.firestore().batch();
     }
-    
+  }
+
+}
+
+function onClickBulkRead(e) {
+
+  firebase.firestore().collection('valores').get().then(s => {
+      s.docs.forEach(doc => {
+        console.log(doc.id);
+      });
+  });
 
 }
 
