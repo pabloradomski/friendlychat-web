@@ -31,6 +31,7 @@ const fs = require('fs');
 
 admin.initializeApp();
 
+
 // TODO(DEVELOPER): Write the addWelcomeMessages Function here.
 exports.addWelcomeMessages = functions.auth.user().onCreate(async (user) => {
     console.log('A new user signed in for the first time.');
@@ -80,3 +81,41 @@ exports.blurOffensiveImages = functions.runWith({memory: '2GB'}).storage.object(
     }
 );
 
+
+exports.sendMail = functions.https.onRequest((req, res) => {
+
+  const functions = require('firebase-functions');
+  const nodemailer = require('nodemailer');
+
+  const gmailEmail = functions.config().gmail.email;
+  const gmailPassword = functions.config().gmail.password;
+  const mailTransport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: gmailEmail,
+      pass: gmailPassword,
+    },
+  });
+
+  const APP_NAME = 'Carteleria Cencosud';
+  const displayName = 'Pablo';
+  const mailOptions = {
+    from: `${APP_NAME} <noreply@firebase.com>`,
+    to: 'radomskip@gmail.com',
+  };
+  
+  // The user subscribed to the newsletter.
+  mailOptions.subject = `Welcome to ${APP_NAME}!`;
+  mailOptions.text = `Hey ${displayName || ''}! Welcome to ${APP_NAME}. I hope you will enjoy our service. ${JSON.stringify(functions.config().gmail)}`;
+  mailTransport.sendMail(mailOptions).then(() => {
+    return console.log('New welcome email sent to:', email);
+  });
+
+  res.status(200).send('Eemail sent');
+
+});
+
+/*
+https://us-central1-friendlychat-492ed.cloudfunctions.net/sendMail
+firebase functions:config:set gmail.email="radomskip@gmail.com" gmail.password="plam309"
+*/
